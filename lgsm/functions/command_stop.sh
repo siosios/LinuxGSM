@@ -8,6 +8,7 @@
 commandname="STOP"
 commandaction="Stopping"
 functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
+fn_firstcommand_set
 
 # Attempts graceful shutdown by sending 'CTRL+c'.
 fn_stop_graceful_ctrlc(){
@@ -249,8 +250,10 @@ fn_stop_graceful_select(){
 		fn_stop_graceful_goldsrc
 	elif [ "${stopmode}" == "10" ]; then
 		fn_stop_graceful_avorion
-        elif [ "${stopmode}" == "11" ]; then
-                fn_stop_graceful_valheim
+	elif [ "${stopmode}" == "11" ]; then
+		fn_stop_graceful_cmd "end" 30
+    elif [ "${stopmode}" == "12" ]; then
+        fn_stop_graceful_valheim
 	fi
 }
 

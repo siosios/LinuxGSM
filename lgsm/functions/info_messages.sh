@@ -135,7 +135,7 @@ fn_info_message_gameserver_resource(){
 	echo -e "${lightyellow}Game Server Resource Usage${default}"
 	fn_messages_separator
 	{
-		if [ "${status}" == "1" ]; then
+		if [ "${status}" != "0" ]; then
 			echo -e "${lightblue}CPU Used:\t${default}${cpuused}%${default}"
 			echo -e "${lightblue}Mem Used:\t${default}${pmemused}%\t${memused}MB${default}"
 		else
@@ -167,7 +167,7 @@ fn_info_message_gameserver(){
 	# Game type:        0
 	# Game mode:        0
 	# Tick rate:        64
-	# Master Server:    true
+	# Master Server:    listed
 	# Status:           ONLINE
 
 	echo -e ""
@@ -187,9 +187,19 @@ fn_info_message_gameserver(){
 			echo -e "${lightblue}Server Description:\t${default}${serverdescription}"
 		fi
 
+		# Appid
+		if [ -n "${appid}" ]; then
+			echo -e "${lightblue}App ID:\t${default}${appid}"
+		fi
+
 		# Branch
 		if [ -n "${branch}" ]; then
 			echo -e "${lightblue}Branch:\t${default}${branch}"
+		fi
+
+		# Beta Password
+		if [ -n "${betapassword}" ]; then
+			echo -e "${lightblue}Beta Password:\t${default}${betapassword}"
 		fi
 
 		# Server ip
@@ -367,12 +377,17 @@ fn_info_message_gameserver(){
 			echo -e "${lightblue}Map rotation:\t${default}${randommap}"
 		fi
 
+		# Server Version (Jedi Knight II: Jedi Outcast)
+		if [ -n "${serverversion}" ]; then
+			echo -e "${lightblue}Server Version:\t${default}${serverversion}"
+		fi
+
 		# Listed on Master server
 		if [ -n "${displaymasterserver}" ]; then
 			if [ "${displaymasterserver}" == "true" ]; then
-				echo -e "${lightblue}Master server:\t${green}${displaymasterserver}${default}"
+				echo -e "${lightblue}Master server:\t${green}listed${default}"
 			else
-				echo -e "${lightblue}Master server:\t${red}${displaymasterserver}${default}"
+				echo -e "${lightblue}Master server:\t${red}not listed${default}"
 			fi
 		fi
 
@@ -543,8 +558,7 @@ fn_info_message_ports(){
 	parmslocation="${red}UNKNOWN${default}"
 	# engines/games that require editing in the config file.
 	local ports_edit_array=( "avalanche2.0" "avalanche3.0" "Ballistic Overkill" "dontstarve" "Eco" "idtech2" "idtech3" "idtech3_ql" "lwjgl2" "Minecraft Bedrock" "Project Cars" "projectzomboid" "quake" "refractor" "realvirtuality" "renderware" "seriousengine35" "Stationeers" "teeworlds" "terraria" "unreal" "unreal2" "unreal3" "TeamSpeak 3" "Mumble" "7 Days To Die" "wurm")
-	for port_edit in "${ports_edit_array[@]}"
-	do
+	for port_edit in "${ports_edit_array[@]}"; do
 		if [ "${shortname}" == "ut3" ]; then
 			parmslocation="${servercfgdir}/UTWeb.ini"
 		elif [ "${shortname}" == "kf2" ]; then
@@ -555,8 +569,7 @@ fn_info_message_ports(){
 	done
 	# engines/games that require editing the parms.
 	local ports_edit_array=( "Avorion" "goldsrc" "Factorio" "Hurtworld" "iw3.0" "ioquake3" "qfusion" "Rust" "Soldat" "spark" "source" "starbound" "unreal4" "realvirtuality" "Unturned" )
-	for port_edit in "${ports_edit_array[@]}"
-	do
+	for port_edit in "${ports_edit_array[@]}"; do
 		if [ "${engine}" == "${port_edit}" ]||[ "${gamename}" == "${port_edit}" ]||[ "${shortname}" == "${port_edit}" ]; then
 			parmslocation="${configdirserver}"
 		fi
@@ -753,7 +766,7 @@ fn_info_message_dst(){
 }
 
 fn_info_message_eco(){
-	echo -e "netstat -atunp | grep mono"
+	echo -e "netstat -atunp | grep EcoServer"
 	echo -e ""
 	{
 		echo -e "${lightblue}DESCRIPTION\tDIRECTION\tPORT\tPROTOCOL${default}"
@@ -813,6 +826,15 @@ fn_info_message_inss(){
 	} | column -s $'\t' -t
 }
 
+	fn_info_message_jk2(){
+		echo -e "netstat -atunp | grep jk2mvded"
+		echo -e ""
+		{
+			echo -e "DESCRIPTION\tDIRECTION\tPORT\tPROTOCOL"
+			echo -e "> Game\tINBOUND\t${port}\tudp"
+		} | column -s $'\t' -t
+	}
+
 fn_info_message_justcause2(){
 	echo -e "netstat -atunp | grep Jcmp-Server"
 	echo -e ""
@@ -871,6 +893,16 @@ fn_info_message_mohaa(){
 	{
 		echo -e "DESCRIPTION\tDIRECTION\tPORT\tPROTOCOL"
 		echo -e "> Game\tINBOUND\t${port}\tudp"
+	} | column -s $'\t' -t
+}
+
+fn_info_message_mom(){
+	echo -e "netstat -atunp | grep MemoriesOfMar"
+	echo -e ""
+	{
+		echo -e "${lightblue}DESCRIPTION\tDIRECTION\tPORT\tPROTOCOL${default}"
+		echo -e "> Game\tINBOUND\t${port}\tudp"
+		echo -e "> BeaconPort\tINBOUND\t${beaconport}\tudp"
 	} | column -s $'\t' -t
 }
 
@@ -982,6 +1014,16 @@ fn_info_message_bf1942(){
 		echo -e "${lightblue}DESCRIPTION\tDIRECTION\tPORT\tPROTOCOL${default}"
 		echo -e "> Game/Query\tINBOUND\t${port}\tudp"
 		echo -e "> Query Steam\tINBOUND\t${queryport}\tudp"
+	} | column -s $'\t' -t
+}
+
+fn_info_message_bfv(){
+	echo -e "netstat -atunp | grep bfv_linded"
+	echo -e ""
+	{
+		echo -e "${lightblue}DESCRIPTION\tDIRECTION\tPORT\tPROTOCOL${default}"
+		echo -e "> Game\tINBOUND\t${port}\tudp"
+		echo -e "> Query\tINBOUND\t${queryport}\tudp"
 	} | column -s $'\t' -t
 }
 
@@ -1429,6 +1471,8 @@ fn_info_message_select_engine(){
 		fn_info_message_hurtworld
 	elif [ "${shortname}" == "inss" ]; then
 		fn_info_message_inss
+	elif [ "${shortname}" == "jk2" ]; then
+		fn_info_message_jk2
 	elif [ "${shortname}" == "jc2" ]; then
 		fn_info_message_justcause2
 	elif [ "${shortname}" == "jc3" ]; then
@@ -1439,6 +1483,8 @@ fn_info_message_select_engine(){
 		fn_info_message_minecraft_bedrock
 	elif [ "${shortname}" == "onset" ]; then
 		fn_info_message_onset
+	elif [ "${shortname}" == "mom" ]; then
+		fn_info_message_mom
 	elif [ "${shortname}" == "pz" ]; then
 		fn_info_message_projectzomboid
 	elif [ "${shortname}" == "pstbs" ]; then
@@ -1465,7 +1511,7 @@ fn_info_message_select_engine(){
 		fn_info_message_sof2
 	elif [ "${shortname}" == "sol" ]; then
 		fn_info_message_soldat
-	elif [ "${shortname}" == "st" ]; then
+	elif [ "${shortname}" == "sb" ]; then
 		fn_info_message_starbound
 	elif [ "${shortname}" == "sbots" ]; then
 		fn_info_message_sbots
@@ -1495,6 +1541,8 @@ fn_info_message_select_engine(){
 		fn_info_message_mumble
 	elif [ "${shortname}" == "bf1942" ]; then
 		fn_info_message_bf1942
+	elif [ "${shortname}" == "bfv" ]; then
+		fn_info_message_bfv
 	elif [ "${shortname}" == "rtcw" ]; then
 		fn_info_message_rtcw
 	elif [ "${shortname}" == "rust" ]; then

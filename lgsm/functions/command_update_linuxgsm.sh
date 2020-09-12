@@ -7,6 +7,7 @@
 commandname="UPDATE-LGSM"
 commandaction="Updating LinuxGSM"
 functionselfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
+fn_firstcommand_set
 
 check.sh
 
@@ -77,7 +78,7 @@ if [ "${script_diff}" != "" ]; then
 		mkdir -p "${backupdir}/script"
 	fi
 	cp "${rootdir}/${selfname}" "${backupdir}/script/${selfname}-$(date +"%m_%d_%Y_%M").bak"
-	if [ $? -ne 0 ]; then
+	if [ $? != 0 ]; then
 		fn_print_fail_eol_nl
 		fn_script_log_fatal "Backup ${selfname}"
 		core_exit.sh
@@ -148,8 +149,7 @@ fi
 if [ -n "${functionsdir}" ]; then
 	if [ -d "${functionsdir}" ]; then
 		cd "${functionsdir}" || exit
-		for functionfile in *
-		do
+		for functionfile in *; do
 			# check if module exists in the repo and remove if missing.
 			# commonly used if module names change.
 			echo -en "checking ${remotereponame} module ${functionfile}...\c"
@@ -159,7 +159,7 @@ if [ -n "${functionsdir}" ]; then
 			else
 				curl -IsfL "https://bitbucket.org/${githubuser}/${githubrepo}/raw/${githubbranch}/${github_file_url_dir}/${functionfile}" 1>/dev/null
 			fi
-			if [ $? -ne 0 ]; then
+			if [ $? != 0 ]; then
 				fn_print_error_eol_nl
 				fn_script_log_error "Checking ${remotereponame} module ${functionfile}"
 				echo -en "removing module ${functionfile}...\c"

@@ -239,6 +239,13 @@ elif [ "${shortname}" == "bf1942" ]; then
 	fn_default_config_remote
 	fn_set_config_vars
 	fn_list_config_locations
+elif [ "${shortname}" == "bfv" ]; then
+	gamedirname="BattlefieldVietnam"
+	array_configs+=( serversettings.con )
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
+	fn_list_config_locations
 elif [ "${shortname}" == "bs" ]; then
 	gamedirname="BladeSymphony"
 	array_configs+=( server.cfg )
@@ -563,6 +570,13 @@ elif [ "${shortname}" == "mta" ]; then
 	fn_fetch_default_config
 	fn_default_config_remote
 	fn_list_config_locations
+elif [ "${shotname}" == "mom" ];then
+	gamedirname="MemoriesofMars"
+	array_configs+=( DedicatedServerConfig.cfg)
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
+	fn_list_config_locations
 elif [ "${shortname}" == "mumble" ]; then
 	gamedirname="Mumble"
 	array_configs+=( murmur.ini )
@@ -612,6 +626,12 @@ elif [ "${shortname}" == "ql" ]; then
 	fn_default_config_remote
 	fn_set_config_vars
 	fn_list_config_locations
+elif [ "${shortname}" == "jk2" ]; then
+	gamedirname="JediKnightIIJediOutcast"
+	array_configs+=( server.cfg )
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
 elif [ "${shortname}" == "qw" ]; then
 	gamedirname="QuakeWorld"
 	array_configs+=( server.cfg )
