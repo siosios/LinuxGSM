@@ -12,7 +12,7 @@ concurrency:
 
 jobs:
   update-check:
-    if: github.repository_owner == 'GameServerManagers'
+    if: github.repository_owner == 'siosios'
     continue-on-error: true
     runs-on: ubuntu-latest
 
