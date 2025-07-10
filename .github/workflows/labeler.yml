@@ -14,8 +14,8 @@ jobs:
     if: github.repository_owner == 'GameServerManagers'
     runs-on: ubuntu-latest
     steps:
-      - name: Issue Labeler
-        uses: github/issue-labeler@v3.4
+      - uses: github/issue-labeler@v3.4
+
         with:
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
           configuration-path: .github/labeler.yml
