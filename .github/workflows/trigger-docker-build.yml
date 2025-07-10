@@ -10,8 +10,9 @@ jobs:
     name: Trigger Build Docker LinuxGSM
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Workflow and Wait (linuxgsm)
-        uses: convictional/trigger-workflow-and-wait@v1.6.5
+
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+
         with:
           owner: GameServerManagers
           repo: docker-linuxgsm
@@ -24,8 +25,8 @@ jobs:
     needs: trigger_build_docker-linuxgsm
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger Workflow and Wait (gameserver)
-        uses: convictional/trigger-workflow-and-wait@v1.6.5
+      - uses: convictional/trigger-workflow-and-wait@v1.6.5
+
         with:
           owner: GameServerManagers
           repo: docker-gameserver
