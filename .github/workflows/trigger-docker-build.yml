@@ -3,12 +3,16 @@ on:
   release:
     types:
       - published
+
 jobs:
   trigger_build_docker-linuxgsm:
-    name: Trigger Build docker-linuxgsm
+    if: github.repository_owner == 'GameServerManagers'
+    name: Trigger Build Docker LinuxGSM
     runs-on: ubuntu-latest
     steps:
+
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
+
         with:
           owner: GameServerManagers
           repo: docker-linuxgsm
@@ -16,10 +20,13 @@ jobs:
           workflow_file_name: docker-publish.yml
 
   trigger_build_docker-gameserver:
-    name: Trigger Build docker-linuxgsm
+    if: github.repository_owner == 'GameServerManagers'
+    name: Trigger Build Docker GameServer
+    needs: trigger_build_docker-linuxgsm
     runs-on: ubuntu-latest
     steps:
       - uses: convictional/trigger-workflow-and-wait@v1.6.5
+
         with:
           owner: GameServerManagers
           repo: docker-gameserver
