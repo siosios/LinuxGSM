@@ -1,4 +1,4 @@
-name: Add to project
+name: Add to Project
 on:
   issues:
     types:
@@ -7,10 +7,11 @@ on:
 
 jobs:
   add-to-project:
-    name: Add game server requests to project
+    if: github.repository_owner == 'GameServerManagers'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/add-to-project@v0.4.1
+
         with:
           project-url: https://github.com/orgs/GameServerManagers/projects/11
           github-token: ${{ secrets.ADD_TO_PROJECT_PAT }}
